@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Presentations/">
+    <Project Path="SupplyManagement.API/SupplyManagement.API.csproj" />
+    <Project Path="SupplyManagement.Web/SupplyManagement.Web.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="SupplyManagement.Core/SupplyManagement.Core.csproj" />
+  <Project Path="SupplyManagement.DataAccess/SupplyManagement.DataAccess.csproj" />
+  <Project Path="SupplyManagement.Shared/SupplyManagement.Shared.csproj" />
+</Solution>
