@@ -21,10 +21,13 @@ namespace SupplyManagement.API.Controllers
         }
 
         [HttpGet("{companyId:Guid}")]
-        public async Task<ObjectDto<CompanyApprovalDto>> Update([FromRoute]Guid companyId) => await _companyService.GetByIdAsync(companyId);
+        public async Task<ObjectDto<CompanyApprovalDto>> GetByIdAsync([FromRoute]Guid companyId) => await _companyService.GetByIdAsync(companyId);
 
         [HttpPut("{companyId:Guid}")]
         public async Task<BaseDto> Update([FromRoute]Guid companyId, [FromBody] UpdateCompanyRequestDto request) => await _companyService.UpdateAsync(companyId, request);
+        
+        [HttpDelete("{companyId:Guid}")]
+        public async Task<BaseDto> Delete([FromRoute]Guid companyId) => await _companyService.DeleteCompanyAsync(companyId);
 
         [Authorize(Roles = "ADMIN,MANAGER")]
         [HttpGet("pending-approval")]

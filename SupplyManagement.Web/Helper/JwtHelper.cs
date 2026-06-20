@@ -29,5 +29,31 @@ namespace SupplyManagement.Web.Helper
                 return "";
             }
         }
+
+        public static string GetCompanyId(string token)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(token))
+                    return "";
+
+                token = token.Replace("Bearer ", "").Trim();
+
+                var handler = new JwtSecurityTokenHandler();
+
+                if (!handler.CanReadToken(token))
+                    return "";
+
+                var jwt = handler.ReadJwtToken(token);
+
+                return jwt.Claims.FirstOrDefault(x =>
+                    x.Type == "CompanyId"
+                )?.Value ?? "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
     }
 }

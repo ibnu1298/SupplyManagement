@@ -6,5 +6,7 @@ namespace SupplyManagement.Core.Repositories.Interfaces
     {
         Task<User?> GetByEmailAsync(string email);
         Task AddAsync(User user);
+        Task<List<User>> GetByCompanyIdAsync(Guid companyId);
+        Task DeleteRangeAsync(List<User> users);
     }
 }

@@ -63,8 +63,6 @@ namespace SupplyManagement.DataAccess
         {
             if (await Users.AnyAsync()) return;
 
-            var defaultCompanyId = await Companies.Select(x => x.Id).FirstOrDefaultAsync();
-
             var adminRoleId = await Roles .Where(x => x.Code == "ADMIN") .Select(x => x.Id).FirstOrDefaultAsync();
             var logisticRoleId = await Roles.Where(x => x.Code == "MANAGER").Select(x => x.Id).FirstOrDefaultAsync();
             var vendorRoleId = await Roles.Where(x => x.Code == "VENDOR").Select(x => x.Id).FirstOrDefaultAsync();
@@ -78,7 +76,7 @@ namespace SupplyManagement.DataAccess
                     Email = "admin@mail.com",
                     FullName = "System Admin",
                     IsActive = true,
-                    CompanyId = defaultCompanyId,
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066cd77170"),
                     RoleId = adminRoleId,
                     CreatedBy = "System"
                 },
@@ -89,7 +87,7 @@ namespace SupplyManagement.DataAccess
                     Email = "manager@mail.com",
                     FullName = "Logistic Manager",
                     IsActive = true,
-                    CompanyId = defaultCompanyId,
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"),
                     RoleId = logisticRoleId,
                     CreatedBy = "System"
                 },
@@ -100,7 +98,7 @@ namespace SupplyManagement.DataAccess
                     Email = "vendor@mail.com",
                     FullName = "Vendor User",
                     IsActive = true,
-                    CompanyId = defaultCompanyId,
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"),
                     RoleId = vendorRoleId,
                     CreatedBy = "System"
                 }

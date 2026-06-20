@@ -30,6 +30,14 @@ namespace SupplyManagement.Web.Controllers
             if (string.IsNullOrEmpty(token))
                 return RedirectToAction("Login", "Auth");
 
+            var role = JwtHelper.GetRole(token ?? "");
+
+            if (role != "ADMIN" && role != "MANAGER")
+            {
+                return Forbid();
+            }
+
+
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
@@ -113,6 +121,30 @@ namespace SupplyManagement.Web.Controllers
                 return NotFound();
 
             return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var token = HttpContext.Session.GetString("token");
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.DeleteAsync(
+                $"{_baseUrl}/api/Company/{id}"
+            );
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Delete failed";
+                return RedirectToAction("Index");
+            }
+
+            TempData["Success"] = "Company deleted successfully";
+            return RedirectToAction("Index");
         }
     }
 }

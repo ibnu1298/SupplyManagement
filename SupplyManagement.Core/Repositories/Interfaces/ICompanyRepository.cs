@@ -18,5 +18,8 @@ namespace SupplyManagement.Core.Repositories.Interfaces
         Task<bool> ExistsByEmailAsync(string email);
 
         Task<List<Company>> GetByStatusAsync(CompanyStatus[] statuses);
+
+        Task DeleteAsync(Company company);
+
     }
 }

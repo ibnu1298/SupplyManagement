@@ -44,7 +44,14 @@ namespace SupplyManagement.Core.Repositories
         {
             return await _context.Companies
                 .Where(x => statuses.Contains(x.Status))
+                .OrderByDescending(x => x.Modified ?? x.Created)
                 .ToListAsync();
         }
+
+        public async Task DeleteAsync(Company company)
+        {
+            _context.Companies.Remove(company);
+        }
+
     }
 }

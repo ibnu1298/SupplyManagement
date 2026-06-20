@@ -73,5 +73,32 @@ namespace SupplyManagement.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            var json = JsonSerializer.Serialize(model);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(
+                $"{_baseUrl}/api/account/register",
+                content
+            );
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Register failed";
+                return View(model);
+            }
+
+            return RedirectToAction("Login");
+        }
     }
 }

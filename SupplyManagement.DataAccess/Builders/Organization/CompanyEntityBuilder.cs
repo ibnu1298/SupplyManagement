@@ -57,7 +57,8 @@ namespace SupplyManagement.DataAccess.Builders.Organization
             var companies = new Company[]
             {
                 new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066cd77170"), Name = "Company1", Status = Shared.Enums.CompanyStatus.Active},
-                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"), Name = "Company Need Approval", Status = Shared.Enums.CompanyStatus.PendingAdminApproval}
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"), Name = "Company Need Approval", Status = Shared.Enums.CompanyStatus.PendingAdminApproval},
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"), Name = "Company Need Approval", Status = Shared.Enums.CompanyStatus.PendingAdminApproval}
             };
 
             foreach (var company in companies)

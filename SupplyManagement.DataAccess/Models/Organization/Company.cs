@@ -59,7 +59,7 @@ namespace SupplyManagement.DataAccess.Models.Organization
         /// Maximum length: 150 characters.
         /// </summary>
         public string CompanyType { get; set; } = string.Empty;
-        
 
+        public virtual User User { get; set; } = null!;
     }
 }

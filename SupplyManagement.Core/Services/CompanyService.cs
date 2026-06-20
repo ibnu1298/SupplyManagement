@@ -1,4 +1,5 @@
-﻿using SupplyManagement.Core.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SupplyManagement.Core.Repositories;
 using SupplyManagement.Core.Repositories.Interfaces;
 using SupplyManagement.Core.Services.Dtos;
 using SupplyManagement.Core.Services.Interfaces;
@@ -17,13 +18,16 @@ namespace SupplyManagement.Core.Services
     {
 
         private readonly ICompanyRepository _companyRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         public CompanyService(
             ICompanyRepository companyRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IUserRepository userRepository)
         {
             _companyRepository = companyRepository;
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task<BaseDto> AdminApprovalAsync(Guid companyId, ApprovalRequestDto request)
@@ -139,6 +143,32 @@ namespace SupplyManagement.Core.Services
             return new(
                 "Company updated successfully",
                 HttpStatusCode.OK);
+        }
+
+        public async Task<BaseDto> DeleteCompanyAsync(Guid id)
+        {
+            var company = await _companyRepository.GetByIdAsync(id);
+
+            if (company == null)
+            {
+                return new("company not found", HttpStatusCode.NotFound);
+            }
+
+            // optional: cek user tanpa Include
+            var Users = await _userRepository.GetByCompanyIdAsync(id);
+
+            if (Users != null)
+            {
+                await _userRepository.DeleteRangeAsync(Users);
+            }
+
+            await _companyRepository.DeleteAsync(company);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new(
+               "Company deleted successfully",
+               HttpStatusCode.OK);
         }
     }
 }

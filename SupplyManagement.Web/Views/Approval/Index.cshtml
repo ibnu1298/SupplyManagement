@@ -4,6 +4,11 @@
 @{
     ViewData["Title"] = "Approval";
     var role = JwtHelper.GetRole(Context.Session.GetString("token") ?? string.Empty);
+    if (role != "ADMIN" && role != "MANAGER")
+    {
+        Context.Response.Redirect("/Home/Index");
+        return;
+    }
 }
 
 @model List<CompanyApprovalDto>
@@ -45,6 +50,18 @@
                            asp-route-id="@item.Id">
                             Detail
                         </a>
+                    }
+                    @if (role == "ADMIN")
+                    {
+                        <form asp-action="Delete" method="post" style="display:inline"
+                              onsubmit="return confirm('Are you sure want to delete this company?');">
+
+                            <input type="hidden" name="id" value="@item.Id" />
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
                     }
                 </td>
             </tr>
