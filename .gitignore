@@ -27,4 +27,4 @@ appsettings.Development.json
 Thumbs.db
 
 # EF Core migrations backup
-Migrations/*Designer.cs~
+Migrations

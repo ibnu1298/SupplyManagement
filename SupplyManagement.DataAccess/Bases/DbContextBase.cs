@@ -11,7 +11,7 @@ namespace SupplyManagement.DataAccess.Bases
     /// Base <see cref="DbContext"/> that automatically tracks audit fields such as Created, CreatedBy, Modified, and ModifiedBy.
     /// It also maps entities to database schemas dynamically based on the <see cref="DatabaseSchemaAttribute"/>.
     /// </summary>
-    public class DbContextBase(DbContextOptions _options, CurrentUserAccessor _currentUserAccessor) : DbContext(_options)
+    public class DbContextBase(DbContextOptions _options) : DbContext(_options)
     {
         /// <summary>
         /// Saves all changes made in this context to the database.
@@ -54,7 +54,7 @@ namespace SupplyManagement.DataAccess.Bases
                 if (entry.Entity is EntityBase entity)
                 {
                     entity.Created = DateTime.UtcNow;
-                    entity.CreatedBy = _currentUserAccessor.UserId.ToString();
+                    entity.CreatedBy = "System";
                 }
             }
 
@@ -64,7 +64,7 @@ namespace SupplyManagement.DataAccess.Bases
                 if (entry.Entity is EntityBase entity)
                 {
                     entity.Modified = DateTime.UtcNow;
-                    entity.ModifiedBy = _currentUserAccessor.UserId.ToString();
+                    entity.ModifiedBy = "System";
                 }
             }
 

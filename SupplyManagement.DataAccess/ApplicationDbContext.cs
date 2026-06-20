@@ -28,8 +28,8 @@ namespace SupplyManagement.DataAccess
     /// Provides a method to seed initial example data.
     /// </para>
     /// </summary>
-    public class ApplicationDbContext(DbContextOptions _options, CurrentUserAccessor _currentUserAccessor)
-        : DbContextBase(_options, _currentUserAccessor)
+    public class ApplicationDbContext(DbContextOptions _options)
+        : DbContextBase(_options)
     {
 
         private readonly PasswordHasher<User> _hasher = new();
