@@ -9,7 +9,4 @@
    ```
    Add-Migration -s SupplyManagement.API -p SupplyManagement.DataAccess -c ApplicationDbContext
    ```
-5. Run the following command:
-   ```
-   Update-Database
-   ```
+5. Start **"SupplyManagement.API"** project to create the database.

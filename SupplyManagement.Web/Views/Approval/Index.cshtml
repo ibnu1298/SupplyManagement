@@ -1,0 +1,53 @@
+﻿@using SupplyManagement.Core.Services.Dtos
+@using SupplyManagement.Shared.Enums
+@using SupplyManagement.Web.Helper
+@{
+    ViewData["Title"] = "Approval";
+    var role = JwtHelper.GetRole(Context.Session.GetString("token") ?? string.Empty);
+}
+
+@model List<CompanyApprovalDto>
+
+<h2>Approval Queue</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>
+                    <span class="badge
+                        @(item.Status == CompanyStatus.PendingAdminApproval ? "bg-warning" :
+                            item.Status == CompanyStatus.PendingManagerApproval ? "bg-info" :
+                            item.Status == CompanyStatus.Active ? "bg-success" :
+                            item.Status == CompanyStatus.Rejected ? "bg-danger" :
+                            "bg-secondary")">
+
+                        @EnumHelper.GetDisplayName(item.Status)
+                    </span>
+                </td>
+                <td>
+                    @if (ApprovalPermissionHelper.CanViewDetail(item.Status, role))
+                    {
+                        <a class="btn btn-primary btn-sm"
+                           asp-action="Detail"
+                           asp-route-id="@item.Id">
+                            Detail
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

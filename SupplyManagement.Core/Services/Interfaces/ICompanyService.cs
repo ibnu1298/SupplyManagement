@@ -5,6 +5,7 @@ namespace SupplyManagement.Core.Services.Interfaces
 {
     public interface ICompanyService
     {
+        Task<ObjectDto<CompanyApprovalDto>> GetByIdAsync(Guid companyId);
         Task<BaseDto> UpdateAsync(Guid companyId, UpdateCompanyRequestDto request);
         Task<ObjectDto<List<CompanyApprovalDto>>> GetPendingApprovalAsync();
         Task<BaseDto> AdminApprovalAsync(Guid companyId, ApprovalRequestDto request);

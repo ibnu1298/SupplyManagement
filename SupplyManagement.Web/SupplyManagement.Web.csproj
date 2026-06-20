@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SupplyManagement.API\SupplyManagement.API.csproj" />
+  </ItemGroup>
+
 </Project>

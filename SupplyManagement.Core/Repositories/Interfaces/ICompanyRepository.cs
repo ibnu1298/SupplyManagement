@@ -1,4 +1,5 @@
-﻿using SupplyManagement.DataAccess.Models.Organization;
+﻿using SupplyManagement.Core.Services.Dtos;
+using SupplyManagement.DataAccess.Models.Organization;
 using SupplyManagement.Shared.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,6 @@ namespace SupplyManagement.Core.Repositories.Interfaces
 
         Task<bool> ExistsByEmailAsync(string email);
 
-        Task<List<Company>> GetByStatusAsync( CompanyStatus status);
+        Task<List<Company>> GetByStatusAsync(CompanyStatus[] statuses);
     }
 }

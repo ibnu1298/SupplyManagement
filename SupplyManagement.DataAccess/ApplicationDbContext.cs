@@ -109,7 +109,7 @@ namespace SupplyManagement.DataAccess
             foreach (var user in users)
             {
                 var hashedPassword =
-                    _hasher.HashPassword(user, "Password123");
+                    _hasher.HashPassword(user, "123");
 
                 user.SetPassword(hashedPassword);
             }

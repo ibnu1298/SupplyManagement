@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SupplyManagement.Core.Repositories.Interfaces;
+using SupplyManagement.Core.Services.Dtos;
 using SupplyManagement.DataAccess;
 using SupplyManagement.DataAccess.Models.Organization;
 using SupplyManagement.Shared.Enums;
@@ -39,10 +40,10 @@ namespace SupplyManagement.Core.Repositories
                 .AnyAsync(x => x.Email == email);
         }
 
-        public async Task<List<Company>> GetByStatusAsync(CompanyStatus status)
+        public async Task<List<Company>> GetByStatusAsync(CompanyStatus[] statuses)
         {
             return await _context.Companies
-                .Where(x => x.Status == status)
+                .Where(x => statuses.Contains(x.Status))
                 .ToListAsync();
         }
     }

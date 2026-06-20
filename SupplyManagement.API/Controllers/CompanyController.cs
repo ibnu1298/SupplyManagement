@@ -20,6 +20,9 @@ namespace SupplyManagement.API.Controllers
             _companyService = companyService;
         }
 
+        [HttpGet("{companyId:Guid}")]
+        public async Task<ObjectDto<CompanyApprovalDto>> Update([FromRoute]Guid companyId) => await _companyService.GetByIdAsync(companyId);
+
         [HttpPut("{companyId:Guid}")]
         public async Task<BaseDto> Update([FromRoute]Guid companyId, [FromBody] UpdateCompanyRequestDto request) => await _companyService.UpdateAsync(companyId, request);
 

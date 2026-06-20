@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using SupplyManagement.Web.Filters;
 using SupplyManagement.Web.Models;
 using System.Diagnostics;
 
 namespace SupplyManagement.Web.Controllers
 {
+    [JwtRequired]
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -2,6 +2,7 @@
 using SupplyManagement.Core.Repositories.Interfaces;
 using SupplyManagement.Core.Services.Dtos;
 using SupplyManagement.Core.Services.Interfaces;
+using SupplyManagement.DataAccess.Models.Security;
 using SupplyManagement.DataAccess.Repositories;
 using SupplyManagement.Shared.Enums;
 using SupplyManagement.Shared.Objects.Dtos;
@@ -48,9 +49,35 @@ namespace SupplyManagement.Core.Services
                 HttpStatusCode.OK);
         }
 
+        public async Task<ObjectDto<CompanyApprovalDto>> GetByIdAsync(Guid companyId)
+        {
+            var company = await _companyRepository.GetByIdAsync(companyId);
+            if (company == null)
+                return new("Role not found", HttpStatusCode.NotFound);
+
+            var companyData = new CompanyApprovalDto
+            {
+                Id = companyId,
+                Name = company.Name,
+                Email = company.Email,
+                PhoneNumber = company.PhoneNumber,
+                Status = company.Status,
+            };
+
+            return new(httpStatusCode: HttpStatusCode.OK)
+            {
+                Obj = companyData
+            };
+        }
+
         public async Task<ObjectDto<List<CompanyApprovalDto>>> GetPendingApprovalAsync()
         {
-            var companies = await _companyRepository.GetByStatusAsync(CompanyStatus.PendingAdminApproval);
+            CompanyStatus[] statuses =
+            [
+                CompanyStatus.PendingAdminApproval,
+                CompanyStatus.PendingManagerApproval
+            ];
+            var companies = await _companyRepository.GetByStatusAsync(statuses);
 
             var result = companies.Select(x => new CompanyApprovalDto
             {

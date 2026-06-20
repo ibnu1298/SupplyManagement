@@ -1,0 +1,83 @@
+﻿@using SupplyManagement.Core.Services.Dtos
+@using SupplyManagement.Shared.Enums
+@using SupplyManagement.Web.Helper
+@model CompanyApprovalDto
+
+@{
+    ViewData["Title"] = "Approval Detail";
+    var token = Context.Session.GetString("token");
+
+    string role = "";
+
+    if (!string.IsNullOrWhiteSpace(token))
+    {
+        role = JwtHelper.GetRole(token);
+    }
+}
+
+<h2>Company Approval Detail</h2>
+
+<div class="card p-4">
+
+    <h4>@Model.Name</h4>
+
+    <p><b>Email:</b> @Model.Email</p>
+
+    <p>
+        <b>Status:</b>
+        <span class="badge
+            @(Model.Status == CompanyStatus.PendingAdminApproval ? "bg-warning" :
+                Model.Status == CompanyStatus.PendingManagerApproval ? "bg-info" :
+                Model.Status == CompanyStatus.Active ? "bg-success" :
+                Model.Status == CompanyStatus.Rejected ? "bg-danger" :
+                "bg-secondary")">
+
+            @EnumHelper.GetDisplayName(Model.Status)
+        </span>
+    </p>
+
+    <hr />
+
+    <h5>Action</h5>
+
+    @if ((Model.Status == CompanyStatus.PendingAdminApproval && role == "ADMIN") ||
+         (Model.Status == CompanyStatus.PendingManagerApproval && role == "MANAGER"))
+    {
+        <form asp-action="Approve" method="post">
+
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="isApproved" value="true" />
+
+            <div class="mb-2">
+                <label>Remarks</label>
+                <textarea name="remarks" class="form-control"></textarea>
+            </div>
+
+            <button class="btn btn-success" type="submit">
+                Approve
+            </button>
+        </form>
+
+        <form asp-action="Approve" method="post" class="mt-2">
+
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="isApproved" value="false" />
+
+            <div class="mb-2">
+                <label>Reject Reason</label>
+                <textarea name="remarks" class="form-control"></textarea>
+            </div>
+
+            <button class="btn btn-danger" type="submit">
+                Reject
+            </button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-secondary">
+            You are not allowed to approve this stage.
+        </div>
+    }
+
+</div>
