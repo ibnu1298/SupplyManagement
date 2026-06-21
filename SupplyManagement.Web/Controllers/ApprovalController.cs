@@ -37,7 +37,6 @@ namespace SupplyManagement.Web.Controllers
                 return Forbid();
             }
 
-
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 

@@ -42,6 +42,7 @@ namespace SupplyManagement.Web.Controllers
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+            
             var response = await _httpClient.PostAsync(
                 $"{_baseUrl}/api/account/login",
                 content

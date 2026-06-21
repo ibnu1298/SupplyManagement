@@ -1,14 +1,88 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SupplyManagement.Core.Services.Dtos;
+using SupplyManagement.DataAccess.Models.Organization;
 using SupplyManagement.Web.Filters;
+using SupplyManagement.Web.Helper;
+using SupplyManagement.Web.Models;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace SupplyManagement.Web.Controllers
 {
     [JwtRequired]
     public class ProfileController : Controller
     {
-        public IActionResult Index()
+        private readonly HttpClient _httpClient;
+        private readonly string _baseUrl;
+
+        public ProfileController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
-            return View();
+            _httpClient = httpClientFactory.CreateClient();
+            _baseUrl = configuration["ApiSettings:BaseUrl"] ?? string.Empty;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            var token = HttpContext.Session.GetString("token");
+
+            var companyId = JwtHelper.GetCompanyId(token ?? string.Empty);
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"{_baseUrl}/api/company/{companyId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<ApiResponse<CompanyModel>>(
+                responseString,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }
+            );
+            var company = result?.Obj;
+
+            return View(company);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCompany(CompanyModel model)
+        {
+
+            var token = HttpContext.Session.GetString("token");
+            var companyId = JwtHelper.GetCompanyId(token??string.Empty);
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var request = new
+            {
+                name = model.Name,
+                email = model.Email,
+                phoneNumber = model.PhoneNumber,
+                businessField = model.BusinessField,
+                companyType = model.CompanyType,
+                photoUrl = model.PhotoUrl
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(
+                $"{_baseUrl}/api/company/{companyId}",
+                request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Failed to update company.";
+                return View("Index", model);
+            }
+
+            TempData["Success"] = "Company updated successfully.";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

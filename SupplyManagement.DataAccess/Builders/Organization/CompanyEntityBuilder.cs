@@ -56,9 +56,10 @@ namespace SupplyManagement.DataAccess.Builders.Organization
         {
             var companies = new Company[]
             {
-                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066cd77170"), Name = "Company1", Status = Shared.Enums.CompanyStatus.Active},
-                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"), Name = "Company Need Approval", Status = Shared.Enums.CompanyStatus.PendingAdminApproval},
-                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"), Name = "Company Need Approval", Status = Shared.Enums.CompanyStatus.PendingAdminApproval}
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066cd77170"), Name = "Company Admin", Status = Shared.Enums.CompanyStatus.Active, Email = "admin@mail.com"},
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"), Name = "Company Manager", Status = Shared.Enums.CompanyStatus.Active, Email = "manager@mail.com"},
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"), Name = "Company Vendor1", Status = Shared.Enums.CompanyStatus.PendingAdminApproval, Email = "vendor1@mail.com"},
+                new() { Id = new Guid("183a808d-1a0d-4bf7-afaa-c2066fd77180"), Name = "Company Vendor2", Status = Shared.Enums.CompanyStatus.PendingAdminApproval, Email = "vendor2@mail.com"}
             };
 
             foreach (var company in companies)

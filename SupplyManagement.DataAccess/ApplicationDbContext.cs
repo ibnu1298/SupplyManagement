@@ -87,18 +87,29 @@ namespace SupplyManagement.DataAccess
                     Email = "manager@mail.com",
                     FullName = "Logistic Manager",
                     IsActive = true,
-                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"),
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"),
                     RoleId = logisticRoleId,
                     CreatedBy = "System"
                 },
                 new()
                 {
                     Id = new Guid("3604ea12-71bf-4be5-b027-93b4d4e3e796"),
-                    Username = "vendor@mail.com",
-                    Email = "vendor@mail.com",
+                    Username = "vendor1@mail.com",
+                    Email = "vendor1@mail.com",
                     FullName = "Vendor User",
                     IsActive = true,
-                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77170"),
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-b2066fd77180"),
+                    RoleId = vendorRoleId,
+                    CreatedBy = "System"
+                },
+                new()
+                {
+                    Id = new Guid("3604ea12-71bf-4be5-b027-93b4d4e6e796"),
+                    Username = "vendor2@mail.com",
+                    Email = "vendor2@mail.com",
+                    FullName = "Vendor User",
+                    IsActive = true,
+                    CompanyId = new Guid("183a808d-1a0d-4bf7-afaa-c2066fd77180"),
                     RoleId = vendorRoleId,
                     CreatedBy = "System"
                 }

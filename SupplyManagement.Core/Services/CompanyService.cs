@@ -66,6 +66,9 @@ namespace SupplyManagement.Core.Services
                 Email = company.Email,
                 PhoneNumber = company.PhoneNumber,
                 Status = company.Status,
+                BusinessField = company.BusinessField,
+                CompanyType = company.CompanyType,
+                Address = company.Address,
             };
 
             return new(httpStatusCode: HttpStatusCode.OK)

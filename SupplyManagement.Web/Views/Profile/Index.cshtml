@@ -1,8 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Profile";    
-}
+﻿@using SupplyManagement.Shared.Enums
 
-<div class="text-center">
-    <h2>Profile Menu</h2>
-    <div>Profile Is Available</div>
+@model CompanyModel
+
+
+@{
+    ViewData["Title"] = "Profile";
+}
+@if (Model.Status != CompanyStatus.Active)
+{
+    <div class="alert alert-warning text-center">
+        <h4>Access Restricted</h4>
+
+        @switch (Model.Status)
+        {
+            case CompanyStatus.PendingAdminApproval:
+                <p>Your registration is currently under Admin review.</p>
+                break;
+
+            case CompanyStatus.PendingManagerApproval:
+                <p>Your registration has been approved by Admin and is waiting for Logistics Manager approval.</p>
+                break;
+
+            case CompanyStatus.Rejected:
+                <p>Your registration has been rejected. Please contact the administrator.</p>
+                break;
+
+            default:
+                <p>Your company is not active yet.</p>
+                break;
+        }
+    </div>
+}
+else
+{
+<div class="container">
+    <h2>Company Profile</h2>
+
+    <form asp-action="UpdateCompany" asp-controller="Profile" method="post">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="BusinessField" class="form-label"></label>
+            <input asp-for="BusinessField" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CompanyType" class="form-label"></label>
+            <input asp-for="CompanyType" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Update Company
+        </button>
+    </form>
 </div>
+}
