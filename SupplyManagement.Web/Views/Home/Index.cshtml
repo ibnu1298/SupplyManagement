@@ -1,10 +1,47 @@
-﻿
+﻿@using SupplyManagement.Shared.Enums
+@model CompanyModel
 
 @{
     ViewData["Title"] = "Project Tender";
-
 }
-<div class="text-center">
-    <h2>Project Tender</h2>
-    <div>Project Tender Is Available</div>
-</div>
+
+@if (Model.Status != CompanyStatus.Active)
+{
+    <div class="alert alert-warning text-center">
+        <h4>Access Restricted</h4>
+
+        @switch (Model.Status)
+        {
+            case CompanyStatus.PendingAdminApproval:
+                <p>Your registration is currently under Admin review.</p>
+                break;
+
+            case CompanyStatus.PendingManagerApproval:
+                <p>Your registration has been approved by Admin and is waiting for Logistics Manager approval.</p>
+                break;
+
+            case CompanyStatus.Rejected:
+                <p>Your registration has been rejected. Please contact the administrator.</p>
+                break;
+
+            default:
+                <p>Your company is not active yet.</p>
+                break;
+        }
+    </div>
+}
+else if (string.IsNullOrWhiteSpace(Model.CompanyType) ||
+     string.IsNullOrWhiteSpace(Model.BusinessField))
+{
+    <div class="alert alert-warning text-center">
+        <h4>Incomplete Company Profile</h4>
+        <p>Please complete your company profile first before accessing Project Tender.</p>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h2>Project Tender</h2>
+        <div>Project Tender Is Available</div>
+    </div>
+}

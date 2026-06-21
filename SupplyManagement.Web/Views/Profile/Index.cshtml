@@ -39,32 +39,32 @@ else
     <form asp-action="UpdateCompany" asp-controller="Profile" method="post">
         <div class="mb-3">
             <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
+            <input asp-for="Name" class="form-control" required />
         </div>
 
         <div class="mb-3">
             <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" />
+            <input asp-for="Email" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label asp-for="PhoneNumber" class="form-label"></label>
-            <input asp-for="PhoneNumber" class="form-control" />
+            <input asp-for="PhoneNumber" class="form-control" required />
         </div>
 
         <div class="mb-3">
             <label asp-for="BusinessField" class="form-label"></label>
-            <input asp-for="BusinessField" class="form-control" />
+            <input asp-for="BusinessField" class="form-control" required />
         </div>
 
         <div class="mb-3">
             <label asp-for="CompanyType" class="form-label"></label>
-            <input asp-for="CompanyType" class="form-control" />
+            <input asp-for="CompanyType" class="form-control" required />
         </div>
 
         <div class="mb-3">
             <label asp-for="Address" class="form-label"></label>
-            <input asp-for="Address" class="form-control" />
+            <input asp-for="Address" class="form-control" required />
         </div>
 
         <button type="submit" class="btn btn-primary">

@@ -138,6 +138,8 @@ namespace SupplyManagement.Core.Services
             company.Name = request.Name;
             company.Email = request.Email;
             company.PhoneNumber = request.PhoneNumber;
+            company.Website = request.Website;
+            company.Address = request.Address;
             company.BusinessField = request.BusinessField ?? string.Empty;
             company.CompanyType = request.CompanyType ?? string.Empty;
 

@@ -53,7 +53,7 @@ namespace SupplyManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCompany(CompanyModel model)
+        public async Task<IActionResult> UpdateCompany(CompanyModel request)
         {
 
             var token = HttpContext.Session.GetString("token");
@@ -61,15 +61,7 @@ namespace SupplyManagement.Web.Controllers
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
-            var request = new
-            {
-                name = model.Name,
-                email = model.Email,
-                phoneNumber = model.PhoneNumber,
-                businessField = model.BusinessField,
-                companyType = model.CompanyType,
-                photoUrl = model.PhotoUrl
-            };
+            
 
             var response = await _httpClient.PutAsJsonAsync(
                 $"{_baseUrl}/api/company/{companyId}",
@@ -78,7 +70,7 @@ namespace SupplyManagement.Web.Controllers
             if (!response.IsSuccessStatusCode)
             {
                 TempData["Error"] = "Failed to update company.";
-                return View("Index", model);
+                return View("Index", request);
             }
 
             TempData["Success"] = "Company updated successfully.";

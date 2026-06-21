@@ -19,11 +19,36 @@ namespace SupplyManagement.Web.Controllers
         public HomeController(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;
-            _baseUrl = config["ApiBaseUrl"] ?? string.Empty;
+            _baseUrl = config["ApiSettings:BaseUrl"] ?? string.Empty;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var token = HttpContext.Session.GetString("token");
+
+            var companyId = JwtHelper.GetCompanyId(token ?? string.Empty);
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"{_baseUrl}/api/company/{companyId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<ApiResponse<CompanyModel>>(
+                responseString,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }
+            );
+            var company = result?.Obj;
+
+            return View(company);
         }
 
         public IActionResult Privacy()
