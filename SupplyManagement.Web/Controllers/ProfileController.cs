@@ -59,9 +59,7 @@ namespace SupplyManagement.Web.Controllers
             var token = HttpContext.Session.GetString("token");
             var companyId = JwtHelper.GetCompanyId(token??string.Empty);
             _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
-
-            
+                new AuthenticationHeaderValue("Bearer", token);            
 
             var response = await _httpClient.PutAsJsonAsync(
                 $"{_baseUrl}/api/company/{companyId}",
