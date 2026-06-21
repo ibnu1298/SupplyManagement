@@ -71,6 +71,7 @@ namespace SupplyManagement.Web.Controllers
             }
 
             HttpContext.Session.SetString("token", result.Obj.Token);
+            HttpContext.Session.SetString("email", result.Obj.Email);
 
             return RedirectToAction("Index", "Home");
         }

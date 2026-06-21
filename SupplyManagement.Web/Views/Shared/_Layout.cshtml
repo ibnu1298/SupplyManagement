@@ -1,6 +1,7 @@
 ﻿@using SupplyManagement.Web.Helper
 @{
     var role = JwtHelper.GetRole(Context.Session.GetString("token") ?? string.Empty);
+    var email = Context.Session.GetString("email") ?? string.Empty;
 }
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <b><a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Supply Management</a></b> |
+                <b><a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Supply Management</a></b> 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -39,13 +40,17 @@
                             </li>
                         }
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item">
-                            <b>
-                                <a class="nav-link text-danger" asp-controller="Auth" asp-action="Logout">
-                                    Logout
-                                </a>
-                            </b>
+                            <span class="nav-link text-muted">
+                                @email
+                            </span>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" asp-controller="Auth" asp-action="Logout">
+                                Logout
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using SupplyManagement.Core.Repositories;
 using SupplyManagement.Core.Repositories.Interfaces;
 using SupplyManagement.Core.Services;
 using SupplyManagement.Core.Services.Interfaces;
+using SupplyManagement.DataAccess;
 using SupplyManagement.DataAccess.Repositories;
+using System.Reflection;
 namespace SupplyManagement.Core
 {
     /// <summary>
@@ -20,6 +23,10 @@ namespace SupplyManagement.Core
         /// <returns>The <see cref="IServiceCollection"/> with added services.</returns>
         public static IServiceCollection RegisterCore(this IServiceCollection services)
         {
+
+            services.AddAutoMapper(config => { }, Assembly.GetExecutingAssembly());
+
+
             #region Repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();

@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SupplyManagement.Core.Repositories;
 using SupplyManagement.Core.Repositories.Interfaces;
 using SupplyManagement.Core.Services.Dtos;
 using SupplyManagement.Core.Services.Interfaces;
+using SupplyManagement.DataAccess.Models.Organization;
 using SupplyManagement.DataAccess.Models.Security;
 using SupplyManagement.DataAccess.Repositories;
 using SupplyManagement.Shared.Enums;
@@ -14,21 +16,8 @@ using System.Text;
 
 namespace SupplyManagement.Core.Services
 {
-    public class CompanyService : ICompanyService
+    public class CompanyService(ICompanyRepository _companyRepository, IUserRepository _userRepository, IUnitOfWork _unitOfWork, IMapper _mapper) : ICompanyService
     {
-
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        public CompanyService(
-            ICompanyRepository companyRepository,
-            IUnitOfWork unitOfWork,
-            IUserRepository userRepository)
-        {
-            _companyRepository = companyRepository;
-            _unitOfWork = unitOfWork;
-            _userRepository = userRepository;
-        }
 
         public async Task<BaseDto> AdminApprovalAsync(Guid companyId, ApprovalRequestDto request)
         {
@@ -41,7 +30,6 @@ namespace SupplyManagement.Core.Services
                 return new("Company is not awaiting admin approval", HttpStatusCode.BadRequest);
 
             company.Status = request.IsApproved ? CompanyStatus.PendingManagerApproval : CompanyStatus.Rejected;
-
             company.Remarks = request.Remarks ?? string.Empty;
 
             await _unitOfWork.SaveChangesAsync();
@@ -59,17 +47,7 @@ namespace SupplyManagement.Core.Services
             if (company == null)
                 return new("Role not found", HttpStatusCode.NotFound);
 
-            var companyData = new CompanyApprovalDto
-            {
-                Id = companyId,
-                Name = company.Name,
-                Email = company.Email,
-                PhoneNumber = company.PhoneNumber,
-                Status = company.Status,
-                BusinessField = company.BusinessField,
-                CompanyType = company.CompanyType,
-                Address = company.Address,
-            };
+            var companyData = _mapper.Map<CompanyApprovalDto>(company);
 
             return new(httpStatusCode: HttpStatusCode.OK)
             {
@@ -86,14 +64,8 @@ namespace SupplyManagement.Core.Services
             ];
             var companies = await _companyRepository.GetByStatusAsync(statuses);
 
-            var result = companies.Select(x => new CompanyApprovalDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Email = x.Email,
-                PhoneNumber = x.PhoneNumber,
-                Status = x.Status
-            }).ToList();
+
+            var result = _mapper.Map<List<CompanyApprovalDto>>(companies);
 
             return new(httpStatusCode: HttpStatusCode.OK)
             {
@@ -135,13 +107,7 @@ namespace SupplyManagement.Core.Services
                 return new("Cannot update Company", HttpStatusCode.Unauthorized);
             }
 
-            company.Name = request.Name;
-            company.Email = request.Email;
-            company.PhoneNumber = request.PhoneNumber;
-            company.Website = request.Website;
-            company.Address = request.Address;
-            company.BusinessField = request.BusinessField ?? string.Empty;
-            company.CompanyType = request.CompanyType ?? string.Empty;
+            _mapper.Map(request, company);
 
             await _unitOfWork.SaveChangesAsync();
 

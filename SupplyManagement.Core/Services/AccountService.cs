@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using SupplyManagement.Core.Dtos;
-using SupplyManagement.Core.Repositories;
+﻿using SupplyManagement.Core.Dtos;
 using SupplyManagement.Core.Repositories.Interfaces;
 using SupplyManagement.Core.Services.Dtos;
 using SupplyManagement.Core.Services.Interfaces;
@@ -8,10 +6,7 @@ using SupplyManagement.DataAccess.Models.Organization;
 using SupplyManagement.DataAccess.Models.Security;
 using SupplyManagement.Shared.Enums;
 using SupplyManagement.Shared.Objects.Dtos;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace SupplyManagement.Core.Services
 {
@@ -74,7 +69,6 @@ namespace SupplyManagement.Core.Services
                 Obj = loginResult
             };
         }
-
         public async Task<BaseDto> RegisterAsync(RegisterRequestDto request)
         {
             var existingUser =
